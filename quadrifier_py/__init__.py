@@ -1,9 +1,9 @@
 bl_info = {
     "name": "Quadrifier",
-    "author": "seventwogth",
+    "author": "seventwogth (David M.)",
     "version": (0, 1, 0),
     "blender": (4, 1, 0),
-    "location": "View3D > Sidebar > Retopo",
+    "location": "View3D > Sidebar > Quadrifier",
     "description": "Optimizes mesh topology without changing the shape.",
     "category": "Mesh",
 }
@@ -11,14 +11,21 @@ bl_info = {
 import bpy
 from .user_interface import RetopoPanel
 from .operations import MESH_OT_remesh
+from .utils import get_mesh_objects
 
 classes = (RetopoPanel, MESH_OT_remesh)
 
 def register():
+    bpy.types.Scene.retopo_target_object = bpy.props.EnumProperty(
+        name="Target Object",
+        description="Mesh object to process",
+        items=get_mesh_objects
+    )
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
+    del bpy.types.Scene.retopo_target_object
 
