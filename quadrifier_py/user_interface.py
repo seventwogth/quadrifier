@@ -13,6 +13,12 @@ class RetopoPanel(bpy.types.Panel):
         col = layout.column()
 
         col.prop(scene, "retopo_target_object", text="Target")
+        col.separator()
+        col.label(text="Remesh Settings:")
+
+        col.prop(scene, "retopo_remesh_mode")
+        col.prop(scene, "retopo_separate_object")
+
 
         obj_name = scene.retopo_target_object
         obj = scene.objects.get(obj_name)

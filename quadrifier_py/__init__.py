@@ -21,6 +21,24 @@ def register():
         description="Mesh object to process",
         items=get_mesh_objects
     )
+
+    bpy.types.Scene.retopo_remesh_mode = bpy.props.EnumProperty(
+        name="Remesh Mode",
+        description="Choose remeshing method",
+        items=[
+            ('QUAD', "Quads", "All-quads remesh"),
+            ('TRI', "Tris", "Triangle-based remesh"),
+            ('AUTO', "Auto", "Let system decide"),
+        ],
+        default='QUAD'
+    )
+
+    bpy.types.Scene.retopo_separate_object = bpy.props.BoolProperty(
+        name="Keep Original",
+        description="Output remeshed mesh as a new object",
+        default=True
+    )
+
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -28,4 +46,7 @@ def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
     del bpy.types.Scene.retopo_target_object
+    del bpy.types.Scene.retopo_remesh_mode
+    del bpy.types.Scene.retopo_separate_object
+
 
