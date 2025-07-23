@@ -1,4 +1,5 @@
 import bpy
+from . import core_interface
 
 class MESH_OT_remesh(bpy.types.Operator):
     bl_idname = "mesh.remesh_operator"
@@ -18,10 +19,12 @@ class MESH_OT_remesh(bpy.types.Operator):
         remesh_mode = scene.retopo_remesh_mode
         keep_original = scene.retopo_separate_object
 
-        self.report({'INFO'}, f"Remeshing '{obj.name}' with mode '{remesh_mode}' (Keep original: {keep_original})")
+        try:
+            core_interface.run_quadrifier(obj, keep_original=keep_original)
+            self.report({'INFO'}, f"Remeshing '{obj.name}' with mode '{remesh_mode}' (Keep original: {keep_original})")
+            return {'FINISHED'}
 
-        # rust kernel call here later
-
-        return {'FINISHED'}
-
+        except Exception as e:
+            self.report({'ERROR'}, f"Remeshing failed: {e}")
+            return {'CANCELLED'}
 
