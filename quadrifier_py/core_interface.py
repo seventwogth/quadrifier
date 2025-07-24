@@ -1,5 +1,4 @@
 import bpy
-import bmesh
 import traceback
 from mathutils import Vector
 import os
@@ -16,15 +15,11 @@ import quadcore
 def run_quadrifier(obj: bpy.types.Object, keep_original=True):
     try:
         print(f"[Quadrifier] Start processing: {obj.name}")
-        
-        mesh = obj.data
-        bm = bmesh.new()
-        bm.from_mesh(mesh)
-        bm.verts.ensure_lookup_table()
-        bm.faces.ensure_lookup_table()
 
-        vertices = [tuple(v.co) for v in bm.verts]
-        faces = [[v.index for v in f.verts] for f in bm.faces]
+        mesh = obj.data
+
+        vertices = [tuple(v.co) for v in mesh.vertices]
+        faces = [list(p.vertices) for p in mesh.polygons]
 
         print(f"[Quadrifier] Vertices: {len(vertices)}, Faces: {len(faces)}")
 
@@ -40,6 +35,8 @@ def run_quadrifier(obj: bpy.types.Object, keep_original=True):
             new_mesh = mesh
             new_obj = obj
 
+        new_mesh.clear_geometry()
+
         new_mesh.from_pydata(new_vertices, [], new_faces)
         new_mesh.update()
 
@@ -48,4 +45,5 @@ def run_quadrifier(obj: bpy.types.Object, keep_original=True):
     except Exception as e:
         print(f"[Quadrifier] Error: {e}")
         traceback.print_exc()
+
 

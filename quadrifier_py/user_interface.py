@@ -26,7 +26,7 @@ class RetopoPanel(bpy.types.Panel):
             mesh = obj.data
             col.label(text=f"Vertices: {len(mesh.vertices)}")
             col.label(text=f"Edges: {len(mesh.edges)}")
-            col.label(text=f"Polygons: {len(mesh.polygons)}")
+            col.label(text=f"Faces: {len(mesh.polygons)}")
         else:
             col.label(text="Select a mesh object")
 
