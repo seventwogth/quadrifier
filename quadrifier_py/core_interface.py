@@ -52,10 +52,10 @@ def run_quadrifier(obj: bpy.types.Object, keep_original=True):
         vertices_world = [tuple(matrix @ v.co) for v in mesh.vertices]
         faces = [list(p.vertices) for p in mesh.polygons]
 
-        print(f"[Quadrifier] Input: {len(vertices_world)} verts, {len(faces)} polys")
+        print(f"[Quadrifier] Input: {len(vertices_world)} verts, {len(faces)} faces")
 
         new_vertices_world, new_faces = quadcore.recalculate_quads(vertices_world, faces)
-        print(f"[Quadrifier] Rust returned: {len(new_vertices_world)} verts, {len(new_faces)} polys")
+        print(f"[Quadrifier] Rust returned: {len(new_vertices_world)} verts, {len(new_faces)} faces")
 
         if keep_original:
             new_mesh = bpy.data.meshes.new(name=f"{obj.name}_quadrified")
