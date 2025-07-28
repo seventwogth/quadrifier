@@ -43,5 +43,5 @@ class MESH_OT_quad_fill(bpy.types.Operator):
             return {'CANCELLED'}
 
         self.report({'INFO'}, f"Filling holes on '{obj.name}'")
-        run_quad_fill(obj)
+        core_interface.run_quad_fill(obj)
         return {'FINISHED'}
