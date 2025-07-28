@@ -28,3 +28,20 @@ class MESH_OT_remesh(bpy.types.Operator):
             self.report({'ERROR'}, f"Remeshing failed: {e}")
             return {'CANCELLED'}
 
+class MESH_OT_quad_fill(bpy.types.Operator):
+    bl_idname = "mesh.quad_fill_operator"
+    bl_label = "Quad Fill Holes"
+    bl_description = "Fill holes with quads"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        obj_name = context.scene.retopo_target_object
+        obj = context.scene.objects.get(obj_name)
+
+        if not obj or obj.type != 'MESH':
+            self.report({'WARNING'}, "No valid mesh object selected")
+            return {'CANCELLED'}
+
+        self.report({'INFO'}, f"Filling holes on '{obj.name}'")
+        run_quad_fill(obj)
+        return {'FINISHED'}
