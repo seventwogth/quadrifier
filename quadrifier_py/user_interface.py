@@ -31,4 +31,5 @@ class RetopoPanel(bpy.types.Panel):
             col.label(text="Select a mesh object")
 
         layout.operator("mesh.remesh_operator", text="Quadrify", icon="MOD_REMESH")
+        layout.operator("mesh.quad_fill_operator", text="Quad Fill Holes", icon="MOD_REMESH")
 
