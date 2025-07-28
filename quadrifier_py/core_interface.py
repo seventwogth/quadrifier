@@ -100,3 +100,26 @@ def run_quadrifier(obj: bpy.types.Object, keep_original=True):
         print(f"[Quadrifier] Error: {e}")
         traceback.print_exc()
 
+
+def run_quad_fill(obj: bpy.types.Object):
+    try:
+        print(f"[Quad Fill] Start processing: {obj.name}")
+
+        mesh = obj.data
+        matrix = obj.matrix_world
+        vertices_world = [tuple(matrix @ v.co) for v in mesh.vertices]
+        faces = [list(p.vertices) for p in mesh.polygons]
+
+        new_vertices, new_faces = quadcore.quad_fill_holes(vertices_world, faces)
+
+        inv_matrix = matrix.inverted()
+        new_vertices = [tuple(inv_matrix @ Vector(v)) for v in new_vertices]
+
+        mesh.clear_geometry()
+        mesh.from_pydata(new_vertices, [], new_faces)
+        mesh.update()
+        print("[Quad Fill] Done")
+
+    except Exception as e:
+        print(f"[Quad Fill] Error: {e}")
+        traceback.print_exc()
