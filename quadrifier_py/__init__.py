@@ -11,9 +11,10 @@ bl_info = {
 import bpy
 from .user_interface import RetopoPanel
 from .operations import MESH_OT_remesh
+from .operations import MESH_OT_quad_fill
 from .utils import get_mesh_objects
 
-classes = (RetopoPanel, MESH_OT_remesh)
+classes = (RetopoPanel, MESH_OT_remesh, MESH_OT_quad_fill)
 
 def register():
     bpy.types.Scene.retopo_target_object = bpy.props.EnumProperty(
